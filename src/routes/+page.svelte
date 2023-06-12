@@ -10,6 +10,7 @@
 </svelte:head>
 
 <main>
+  <h1>THE CAT DEN</h1>
   <form method="POST">
     <!-- eslint-disable svelte/no-at-html-tags My data is safe, I promise -->
     {@html captcha.data}
@@ -24,9 +25,16 @@
 </main>
 
 <style lang="scss">
+  h1 {
+    font-size: 5rem;
+    font-weight: 900;
+  }
   main {
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
   }
   form {
     display: flex;

@@ -1,4 +1,5 @@
-import { fail } from '@sveltejs/kit'
+import { createUser } from '$lib/server/server'
+import { fail, redirect } from '@sveltejs/kit'
 import * as svgCaptcha from 'svg-captcha'
 import { z } from 'zod'
 
@@ -31,16 +32,22 @@ const schema = z.object({
     }),
 })
 export const actions = {
-  async default({ request }) {
+  async default({ request, cookies }) {
     const data = Object.fromEntries(await request.formData())
     const parsed = schema.safeParse(data)
     if (!parsed.success) {
       return fail(400, { error: parsed.error.errors[0].message })
     }
-    const { captcha_id, captcha } = parsed.data
+    const { captcha_id, captcha, username } = parsed.data
     if (captchas.get(captcha_id) !== captcha) {
       return fail(400, { error: 'Invalid captcha' })
     }
-    console.log(parsed.data)
+    const userId = crypto.randomUUID()
+    createUser(userId, username)
+    cookies.set('user_id', userId, {
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    })
+    throw redirect(302, '/chat')
   },
 }
