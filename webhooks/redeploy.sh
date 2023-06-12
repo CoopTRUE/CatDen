@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull -f origin master
+git pull -f origin main
 pnpm install
 pnpm build
 pm2 reload all
