@@ -10,7 +10,7 @@
 </svelte:head>
 
 <main>
-  <h1>THE CAT DEN</h1>
+  <h1>THE CAT DEN2</h1>
   <form method="POST">
     <!-- eslint-disable svelte/no-at-html-tags My data is safe, I promise -->
     {@html captcha.data}
