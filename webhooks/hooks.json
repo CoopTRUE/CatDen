@@ -1,8 +1,8 @@
 [
   {
     "id": "redeploy-app",
-    "execute-command": "/root/webhooks/redeploy.sh",
-    "command-working-directory": "/root/TorSite",
+    "execute-command": "/root/CatDen/webhooks/redeploy.sh",
+    "command-working-directory": "/root/CatDen",
     "response-message": "Deploying...",
     "trigger-rule": {
       "and": [
