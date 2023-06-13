@@ -13,7 +13,8 @@ export function load({ cookies }) {
     throw redirect(302, '/')
   }
   return {
-    userId: parsed.data,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    localUserId: parsed.data,
     users,
   }
 }
@@ -22,12 +23,14 @@ const messageSchema = z.object({
   userId: userIdSchema,
   message: z.string().min(1),
 })
+const logoutSchema = z.object({
+  userId: userIdSchema,
+})
 export const actions = {
   async message({ request }) {
     const data = Object.fromEntries(await request.formData())
     const messageParsed = messageSchema.safeParse(data)
     if (!messageParsed.success) {
-      console.log(messageParsed.error.errors)
       throw error(400, messageParsed.error.errors[0].message)
     }
     const { userId, message } = messageParsed.data
@@ -35,7 +38,13 @@ export const actions = {
     newChat(userId, parsedMessage)
     console.log('new message', userId, parsedMessage)
   },
-  logout() {
+  async logout({ request }) {
+    const data = Object.fromEntries(await request.formData())
+    const parsed = logoutSchema.safeParse(data)
+    if (!parsed.success) {
+      throw error(400, parsed.error.errors[0].message)
+    }
+    users.delete(parsed.data.userId)
     throw redirect(302, '/')
   },
 }

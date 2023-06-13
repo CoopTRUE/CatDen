@@ -44,12 +44,14 @@
     align-items: center;
     padding: 2rem;
     transition: all 0.5s ease;
-    &:has(input:focus, input:hover) {
-      box-shadow: 0 0 1rem 0.5rem green;
-    }
-    &:has(button:focus, button:hover) {
-      box-shadow: 0 0 1.5rem 2rem green;
-    }
+    // &:has(input:focus, input:hover) {
+    //   box-shadow: 0 0 1rem 0.5rem green;
+    // }
+    // &:has(button:focus, button:hover) {
+    //   box-shadow: 0 0 1.5rem 2rem green;
+    // }
+    // tor doesn't support :has
+    box-shadow: 0 0 1rem 0.5rem green;
   }
   p {
     width: 40ch;
