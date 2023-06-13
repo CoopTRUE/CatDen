@@ -1,5 +1,5 @@
 import parseMessage from '$lib/server/messageParser'
-import { newChat, users } from '$lib/server/server'
+import { newMessage, users } from '$lib/server/server'
 import { error, redirect } from '@sveltejs/kit'
 import { z } from 'zod'
 
@@ -35,7 +35,7 @@ export const actions = {
     }
     const { userId, message } = messageParsed.data
     const parsedMessage = parseMessage(message)
-    newChat(userId, parsedMessage)
+    newMessage(userId, parsedMessage)
     console.log('new message', userId, parsedMessage)
   },
   async logout({ request }) {

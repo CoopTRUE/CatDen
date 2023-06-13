@@ -1,8 +1,18 @@
 <script lang="ts">
+  import type { SuperMessage } from '$lib/types.js'
+
   export let data
   const { localUserId, users } = data
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const localUser = users.get(localUserId)!
+
+  const orderedMessages: SuperMessage[] = []
+  for (const [userId, user] of users) {
+    for (const message of user.messages) {
+      orderedMessages.push({ ...message, ...user, userId })
+    }
+  }
+  orderedMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
 
   function timeUntil(milliseconds: number) {
     const duration = milliseconds - Date.now()
@@ -33,9 +43,9 @@
   <div class="chatroom">
     <header>
       <h1>
-        You are logged in as <span style:color="hsl({localUser.colorHue}, 100%, 70%)"
-          >{localUser.username}</span
-        >
+        You are logged in as <span style:color="hsl({localUser.colorHue}, 100%, 70%)">
+          {localUser.username}
+        </span>
       </h1>
       <form method="POST" action="?/logout">
         <p>
@@ -46,18 +56,16 @@
       </form>
     </header>
     <div class="messages">
-      {#each [...users] as [id, user]}
-        {#each [...user.chats.values()] as message}
-          <div class="message" class:self={id === localUserId}>
-            <span class="username" style:color="hsl({user.colorHue}, 100%, 70%)">
-              {user.username}
-            </span>
-            <span class="content">
-              <!-- eslint-disable svelte/no-at-html-tags DOMParser works wonders -->
-              {@html message}
-            </span>
-          </div>
-        {/each}
+      {#each orderedMessages as { userId, colorHue, username, message }}
+        <div class="message" class:self={userId === localUserId}>
+          <span class="username" style:color="hsl({colorHue}, 100%, 70%)">
+            {username}
+          </span>
+          <span class="content">
+            <!-- eslint-disable svelte/no-at-html-tags DOMParser works wonders -->
+            {@html message}
+          </span>
+        </div>
       {/each}
     </div>
     <form action="?/message" method="POST" class="message-form">
