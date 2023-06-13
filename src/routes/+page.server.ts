@@ -6,9 +6,17 @@ import { z } from 'zod'
 const CAPTCHA_LENGTH = 5
 const captchas = new Map<string, string>()
 
-export function load() {
+const ALLOWED_CHARS = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+
+export function load({ cookies }) {
+  cookies.delete('user_id')
   const id = crypto.randomUUID()
-  const { data, text } = svgCaptcha.create({ color: true, size: CAPTCHA_LENGTH, noise: 7 })
+  const { data, text } = svgCaptcha.create({
+    color: true,
+    size: CAPTCHA_LENGTH,
+    noise: 7,
+    charPreset: ALLOWED_CHARS,
+  })
   captchas.set(id, text)
   setTimeout(() => captchas.delete(id), 1000 * 60)
   return {

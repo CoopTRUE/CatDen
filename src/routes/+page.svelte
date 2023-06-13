@@ -43,7 +43,13 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    box-shadow: 0 0 1rem 0.5rem green;
+    transition: all 0.5s ease;
+    &:has(input:focus, input:hover) {
+      box-shadow: 0 0 1rem 0.5rem green;
+    }
+    &:has(button:focus, button:hover) {
+      box-shadow: 0 0 1.5rem 2rem green;
+    }
   }
   p {
     width: 40ch;

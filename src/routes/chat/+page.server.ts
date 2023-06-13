@@ -1,6 +1,6 @@
 import parseMessage from '$lib/server/messageParser'
 import { newChat, users } from '$lib/server/server'
-import { error } from '@sveltejs/kit'
+import { error, redirect } from '@sveltejs/kit'
 import { z } from 'zod'
 
 const userIdSchema = z
@@ -10,7 +10,7 @@ const userIdSchema = z
 export function load({ cookies }) {
   const parsed = userIdSchema.safeParse(cookies.get('user_id'))
   if (!parsed.success) {
-    throw error(400, parsed.error.errors[0].message)
+    throw redirect(302, '/')
   }
   return {
     userId: parsed.data,
@@ -34,5 +34,8 @@ export const actions = {
     const parsedMessage = parseMessage(message)
     newChat(userId, parsedMessage)
     console.log('new message', userId, parsedMessage)
+  },
+  logout() {
+    throw redirect(302, '/')
   },
 }
