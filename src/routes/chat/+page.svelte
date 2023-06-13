@@ -3,6 +3,10 @@
   const { userId, users } = data
 </script>
 
+<svelte:head>
+  <!-- refresh every 5 seconds -->
+  <meta http-equiv="refresh" content="5" />
+</svelte:head>
 <main>
   <div class="chatroom">
     <header>

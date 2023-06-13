@@ -1,25 +1,7 @@
+import parseMessage from '$lib/server/messageParser'
 import { newChat, users } from '$lib/server/server'
 import { error } from '@sveltejs/kit'
-import createDOMPurify from 'dompurify'
-import { JSDOM } from 'jsdom'
-import { marked } from 'marked'
 import { z } from 'zod'
-
-const renderer = new marked.Renderer()
-renderer.paragraph = (text) => text
-renderer.strong = (text) => `<b>${text}</b>`
-renderer.em = (text) => `<i>${text}</i>`
-renderer.codespan = (text) => `<code>${text}</code>`
-renderer.blockquote = (text) => `<blockquote>${text}</blockquote>`
-marked.use({ renderer })
-
-const window = new JSDOM('').window
-const DOMPurify = createDOMPurify(window)
-const DOMPurifyConfig = {
-  ALLOWED_TAGS: ['b', 'i', 'code', 'blockquote'],
-  ALLOWED_ATTR: [],
-}
-DOMPurify.setConfig(DOMPurifyConfig)
 
 const userIdSchema = z
   .string()
@@ -49,9 +31,8 @@ export const actions = {
       throw error(400, messageParsed.error.errors[0].message)
     }
     const { userId, message } = messageParsed.data
-    const markdown = marked(message.replace(/</g, '&lt;').replace(/>/g, '&gt;'))
-    const purified = DOMPurify.sanitize(markdown)
-    newChat(userId, purified)
-    console.log('new message', userId, purified)
+    const parsedMessage = parseMessage(message)
+    newChat(userId, parsedMessage)
+    console.log('new message', userId, parsedMessage)
   },
 }
