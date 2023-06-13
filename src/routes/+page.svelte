@@ -1,6 +1,7 @@
 <script lang="ts">
   export let data
   const { captcha } = data
+  const src = `data:image/svg+xml;base64,${captcha.data}`
   export let form
 </script>
 
@@ -12,8 +13,7 @@
 <main>
   <h1>THE CAT DEN</h1>
   <form method="POST">
-    <!-- eslint-disable svelte/no-at-html-tags My data is safe, I promise -->
-    {@html captcha.data}
+    <img {src} alt="Captcha" />
     <input type="hidden" name="captcha_id" value={captcha.id} />
     <input required type="text" name="captcha" placeholder="Captcha" />
     <input required type="text" name="username" placeholder="Username" />
@@ -22,6 +22,10 @@
       <p>{form.error}</p>
     {/if}
   </form>
+  <p>
+    This site works without JavaScript. You may need to reduce your security settings to load the
+    captcha.
+  </p>
 </main>
 
 <style lang="scss">
@@ -43,5 +47,9 @@
     align-items: center;
     padding: 2rem;
     box-shadow: 0 0 1rem 0.5rem green;
+  }
+  p {
+    width: 40ch;
+    text-align: center;
   }
 </style>

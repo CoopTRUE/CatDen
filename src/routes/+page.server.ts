@@ -14,7 +14,7 @@ export function load() {
   return {
     captcha: {
       id,
-      data,
+      data: Buffer.from(data).toString('base64'),
     },
   }
 }
