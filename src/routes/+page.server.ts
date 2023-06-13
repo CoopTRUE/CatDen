@@ -42,8 +42,7 @@ export const actions = {
     if (captchas.get(captcha_id) !== captcha) {
       return fail(400, { error: 'Invalid captcha' })
     }
-    const userId = crypto.randomUUID()
-    createUser(userId, username)
+    const userId = createUser(username)
     cookies.set('user_id', userId, {
       path: '/',
       maxAge: 1000 * 60 * 60 * 24 * 365,

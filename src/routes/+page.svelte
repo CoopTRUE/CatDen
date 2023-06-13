@@ -22,15 +22,12 @@
       <p>{form.error}</p>
     {/if}
   </form>
-  <p>
-    This site works without JavaScript. You may need to reduce your security settings to load the
-    captcha.
-  </p>
+  <p>This site does not contain javascript.<br />Lower security if the captcha does not load.</p>
 </main>
 
 <style lang="scss">
   h1 {
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 900;
   }
   main {

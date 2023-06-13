@@ -1,12 +1,15 @@
 export interface User {
   readonly username: string
+  readonly colorHue: number
   readonly chats: Map<string, string>
 }
 
 export const users = new Map<string, User>()
 
-export function createUser(id: string, username: string) {
-  users.set(id, { username, chats: new Map() })
+export function createUser(username: string) {
+  const id = crypto.randomUUID()
+  users.set(id, { username, chats: new Map(), colorHue: Math.random() * 360 })
+  return id
 }
 
 export function newChat(id: string, chat: string) {
