@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>Login | The Cat Den</title>
+  <title>Login | The Cat Den (hello)</title>
   <meta name="description" content="Login to The Cat Den" />
 </svelte:head>
 
